@@ -140,6 +140,14 @@ void keyboardInterruptHandler() {
 
     if (character == '\b') {
         terminalBackspace();
+        // CursorPosition position = terminalGetCursorPos();
+        // char buffer[12];
+        // char* x = intToString(position.x, buffer);
+        // write_serial_string(x);
+        // write_serial('x');
+        // char* y = intToString(position.y, buffer);
+        // write_serial_string(y);
+        // write_serial(' ');
         return;
     }
 
