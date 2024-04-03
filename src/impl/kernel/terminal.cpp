@@ -105,6 +105,7 @@ void terminalBackspace() {
     col--;
     printChar(' ');
     col--;
+    terminalSetCursorPos(col, row);
 }
 
 void print(char* str) {
