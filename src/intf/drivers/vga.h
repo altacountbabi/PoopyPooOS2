@@ -1,0 +1,1 @@
+void drawPixel(int x, int y, char color);

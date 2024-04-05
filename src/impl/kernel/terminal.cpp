@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <io.h>
 
-#define VGA_BUFFER_ADDR 0xb8000
 #define VGA_COLS 80
 #define VGA_ROWS 25
 
@@ -50,6 +49,7 @@ void printNewline() {
 
     if (row < VGA_ROWS - 1) {
         row++;
+        terminalSetCursorPos(col, row);
         return;
     }
 
@@ -61,6 +61,7 @@ void printNewline() {
     }
 
     terminalClearRow(VGA_COLS - 1);
+    terminalSetCursorPos(col, row);
 }
 
 void printChar(char character) {
@@ -129,4 +130,48 @@ CursorPosition terminalGetCursorPos() {
     return {
         x: col, y: row
     };
+}
+
+void terminalSetCursorState(bool state) {
+    if (state) {
+        outb(0x3D4, 0x0A);
+	    outb(0x3D5, (inb(0x3D5) & 0xC0) | 14);
+	    outb(0x3D4, 0x0B);
+	    outb(0x3D5, (inb(0x3D5) & 0xE0) | 15);
+    }
+    else {
+        outb(0x3D4, 0x0A);
+	    outb(0x3D5, 0x20);
+    }
+}
+
+void terminalArrowKey(int type) {
+    switch (type) {
+        case 0: // left arrow
+            if (col == 0)
+                break;
+
+            col--;
+            terminalSetCursorPos(col, row);
+            break;
+        case 1: // right arrow
+            // TODO: fix right arrow key
+            // find the end of the line where the text ends
+            int endOfLine = col;
+            for (int i = col; i < VGA_COLS; i++) {
+                if (buffer[i + VGA_COLS * row].character == 0) {
+                    endOfLine = i;
+                    break;
+                }
+            }
+
+            if (col == endOfLine)
+                break;
+
+            if (col < endOfLine) {
+                col++;
+                terminalSetCursorPos(col, row);
+            }
+            break;
+    }
 }
