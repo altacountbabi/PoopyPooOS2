@@ -72,8 +72,6 @@ extern "C" void kernel_main() {
     terminalSetCursorState(true);
     terminalSetColor(PRINT_COLOR_LIGHT_GRAY, PRINT_COLOR_BLACK);
 
-    // drawPixel(100, 5, 4);
-
     print("Loading keyboard driver... ");
     keyboard::init();
     print("All drivers were loaded correctly.");
