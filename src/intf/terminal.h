@@ -36,3 +36,5 @@ void terminalBackspace();
 void terminalSetColor(uint8_t foreground, uint8_t background);
 void terminalSetCursorPos(size_t x, size_t y);
 CursorPosition terminalGetCursorPos();
+void terminalSetCursorState(bool state);
+void terminalArrowKey(int type);
